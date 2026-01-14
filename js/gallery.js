@@ -147,24 +147,35 @@ class PortfolioApp {
 
         this.swiperWrapper.innerHTML = '';
 
-        this.filteredMedia.forEach((media, index) => {
+        // On mobile, limit to first 20 slides for performance
+        const isMobile = window.innerWidth < 768;
+        const mediaToRender = isMobile
+            ? this.filteredMedia.slice(0, 20)
+            : this.filteredMedia;
+
+        mediaToRender.forEach((media, index) => {
             const slide = document.createElement('div');
             slide.className = 'swiper-slide';
             slide.dataset.index = index;
 
             if (media.type === 'video') {
+                // Video with poster for faster load
+                const posterAttr = media.poster ? `poster="${media.poster}"` : '';
                 slide.innerHTML = `
           <div class="slide-content video-slide">
-            <video src="${media.src}" muted loop playsinline preload="metadata"></video>
+            <video data-src="${media.src}" ${posterAttr} muted loop playsinline preload="none" class="swiper-lazy"></video>
+            <div class="swiper-lazy-preloader"></div>
             <div class="video-overlay">
               <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
             </div>
           </div>
         `;
             } else {
+                // Image with lazy loading
                 slide.innerHTML = `
           <div class="slide-content">
-            <img src="${media.src}" alt="Photo ${index + 1}" loading="lazy">
+            <img data-src="${media.src}" alt="Photo ${index + 1}" class="swiper-lazy">
+            <div class="swiper-lazy-preloader"></div>
           </div>
         `;
             }
@@ -173,23 +184,46 @@ class PortfolioApp {
         });
 
         this.updateCounter(0);
+
+        // Update total count based on actual rendered slides
+        if (this.totalItemsEl) {
+            this.totalItemsEl.textContent = mediaToRender.length;
+        }
     }
 
     initSwiper() {
+        // Optimize for mobile: limit slides if too many
+        const isMobile = window.innerWidth < 768;
+        const maxSlides = isMobile ? 20 : this.filteredMedia.length;
+
+        // Limit slides on mobile to prevent memory issues
+        if (isMobile && this.filteredMedia.length > maxSlides) {
+            const slides = this.swiperWrapper.querySelectorAll('.swiper-slide');
+            slides.forEach((slide, i) => {
+                if (i >= maxSlides) slide.remove();
+            });
+        }
+
         this.swiper = new Swiper('.gallery-swiper', {
             effect: 'coverflow',
             grabCursor: true,
             centeredSlides: true,
             slidesPerView: 'auto',
-            loop: this.filteredMedia.length > 3,
-            speed: 600,
+            loop: false, // Disable loop to reduce memory
+            speed: 400,
+
+            // Lazy loading for performance
+            lazy: {
+                loadPrevNext: true,
+                loadPrevNextAmount: 2,
+            },
 
             coverflowEffect: {
                 rotate: 0,
-                stretch: 80,
-                depth: 200,
+                stretch: isMobile ? 40 : 80,
+                depth: isMobile ? 100 : 200,
                 modifier: 1,
-                slideShadows: true,
+                slideShadows: false, // Disable shadows for performance
             },
 
             pagination: {
@@ -204,8 +238,16 @@ class PortfolioApp {
 
             mousewheel: {
                 enabled: true,
-                sensitivity: 1.5,
+                sensitivity: 1,
+                thresholdDelta: 70, // Prevent scroll jank
             },
+
+            // Touch optimization
+            touchRatio: 1,
+            touchAngle: 45,
+            simulateTouch: true,
+            shortSwipes: true,
+            longSwipesRatio: 0.3,
 
             on: {
                 slideChange: (swiper) => {
@@ -235,6 +277,10 @@ class PortfolioApp {
         if (activeSlide) {
             const video = activeSlide.querySelector('video');
             if (video) {
+                // Lazy load: set src from data-src if not loaded yet
+                if (!video.src && video.dataset.src) {
+                    video.src = video.dataset.src;
+                }
                 video.play().catch(() => { });
                 // Hide overlay when playing
                 const overlay = activeSlide.querySelector('.video-overlay');

@@ -701,6 +701,38 @@ body {
   opacity: 0;
 }
 
+/* Swiper Lazy Loading Preloader */
+.swiper-lazy-preloader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  margin-left: -20px;
+  margin-top: -20px;
+  border: 3px solid var(--glass-border);
+  border-top-color: var(--ig-pink);
+  border-radius: 50%;
+  animation: swiper-preloader-spin 1s linear infinite;
+  z-index: 10;
+}
+
+@keyframes swiper-preloader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.swiper-slide-active .swiper-lazy-preloader,
+.swiper-slide-next .swiper-lazy-preloader,
+.swiper-slide-prev .swiper-lazy-preloader {
+  display: block;
+}
+
+.swiper-lazy-loaded+.swiper-lazy-preloader {
+  display: none;
+}
+
 /* Swiper Navigation */
 .gallery-swiper .swiper-button-prev,
 .gallery-swiper .swiper-button-next {
