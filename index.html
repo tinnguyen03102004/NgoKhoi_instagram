@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anh Khôi | Portfolio 3D</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="Portfolio cá nhân của Anh Khôi - Khám phá bộ sưu tập hình ảnh và video trong không gian 3D ấn tượng.">
+  <meta name="keywords" content="Anh Khôi, Portfolio, Photography, 3D Gallery">
+  <meta name="author" content="Anh Khôi">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Anh Khôi | Portfolio 3D">
+  <meta property="og:description" content="Khám phá bộ sưu tập hình ảnh và video trong không gian 3D ấn tượng.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/media/instagram/anhkhoiii_090_2025-12-06_05-08-27_UTC_profile_pic.jpg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <!-- Loader -->
+  <div class="loader" id="loader">
+    <div class="loader-container">
+      <div class="loader-rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+      <div class="loader-bike-wrapper">
+        <img src="assets/media/motorcycle-hero.png" alt="Motorcycle" class="loader-bike">
+        <div class="bike-glow"></div>
+      </div>
+      <div class="loader-particles">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <p class="loader-text">Loading Portfolio...</p>
+    <div class="loader-progress">
+      <div class="loader-progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="main-container">
+    <!-- Hero Section (Cover) -->
+    <section class="hero" id="heroCover">
+      <div class="hero-content">
+        <div class="profile-wrapper">
+          <img src="assets/media/instagram/anhkhoiii_090_2025-12-06_05-08-27_UTC_profile_pic.jpg" alt="Anh Khôi"
+            class="profile-pic">
+          <div class="profile-glow"></div>
+        </div>
+        <h1 class="hero-title">Anh Khôi</h1>
+        <p class="hero-subtitle">Visual Storyteller</p>
+        <button class="cta-btn" id="enterGalleryBtn">
+          <span>Explore Gallery</span>
+          <svg class="cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Gallery Section (Hidden by default) -->
+    <section class="gallery-section hidden" id="galleryView">
+      <!-- Back Button -->
+      <button class="back-btn" id="backToHeroBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        <span>Back</span>
+      </button>
+
+      <!-- Toggle Tabs -->
+      <div class="gallery-tabs">
+        <button class="tab-btn active" data-filter="image">Photos</button>
+        <button class="tab-btn" data-filter="video">Videos</button>
+      </div>
+
+      <!-- Swiper Coverflow -->
+      <div class="swiper gallery-swiper">
+        <div class="swiper-wrapper" id="swiperWrapper">
+          <!-- Slides will be injected by JS -->
+        </div>
+
+        <!-- Pagination Dots -->
+        <div class="swiper-pagination"></div>
+      </div>
+
+      <!-- Counter -->
+      <div class="gallery-counter">
+        <span id="currentIndex">1</span> / <span id="totalItems">82</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    </button>
+    <div class="lightbox-content" id="lightboxContent">
+      <!-- Content injected by JS -->
+    </div>
+    <div class="lightbox-nav">
+      <button class="lightbox-nav-btn" id="lightboxPrev" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+      <button class="lightbox-nav-btn" id="lightboxNext" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script type="module" src="js/gallery.js"></script>
+</body>
+
+</html>
