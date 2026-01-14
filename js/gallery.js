@@ -106,6 +106,7 @@ class PortfolioApp {
 
     showHero() {
         this.currentView = 'hero';
+        this.pauseAllVideos();
 
         // Animate gallery out
         this.galleryView.classList.add('hidden');
@@ -114,9 +115,6 @@ class PortfolioApp {
         setTimeout(() => {
             this.heroCover.classList.remove('hidden');
         }, 300);
-
-        // Pause any playing videos
-        this.pauseAllVideos();
     }
 
     // === Tab Switching ===
@@ -262,16 +260,38 @@ class PortfolioApp {
     }
 
     handleVideoAutoplay() {
-        // Pause all videos first
-        this.pauseAllVideos();
+        if (!this.swiper) return;
 
-        // Play video in active slide
-        const activeSlide = document.querySelector('.swiper-slide-active');
+        // Only run if we are in the Videos tab
+        const activeTab = document.querySelector('.tab-btn.active');
+        const isVideoTab = activeTab && activeTab.textContent.toLowerCase().includes('video');
+
+        if (!isVideoTab) {
+            this.pauseAllVideos();
+            return;
+        }
+
+        // Pause all first
+        const allVideos = this.swiperWrapper.querySelectorAll('video');
+        allVideos.forEach(video => {
+            if (!video.paused) {
+                video.pause();
+                // We keep the currentTime to allow resuming if swiped back
+                const overlay = video.parentElement.querySelector('.video-overlay');
+                if (overlay) overlay.style.opacity = '1';
+            }
+        });
+
+        // Play the active one
+        const activeIndex = this.swiper.activeIndex;
+        const activeSlide = this.swiper.slides[activeIndex];
+
         if (activeSlide) {
             const video = activeSlide.querySelector('video');
             if (video) {
-                video.play().catch(() => { });
-                // Hide overlay when playing
+                video.play().catch(error => {
+                    console.log("Autoplay blocked or failed:", error);
+                });
                 const overlay = activeSlide.querySelector('.video-overlay');
                 if (overlay) overlay.style.opacity = '0';
             }
@@ -279,12 +299,12 @@ class PortfolioApp {
     }
 
     pauseAllVideos() {
-        document.querySelectorAll('.gallery-swiper video').forEach(v => {
+        const allVideos = document.querySelectorAll('.gallery-swiper video');
+        allVideos.forEach(v => {
             v.pause();
-            v.currentTime = 0;
+            const overlay = v.parentElement.querySelector('.video-overlay');
+            if (overlay) overlay.style.opacity = '1';
         });
-        // Show all overlays
-        document.querySelectorAll('.video-overlay').forEach(o => o.style.opacity = '1');
     }
 
     updateCounter(index) {
