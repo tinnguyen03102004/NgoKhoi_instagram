@@ -883,45 +883,134 @@ body {
 }
 
 /* === Responsive === */
+
+/* Tablet */
 @media (max-width: 768px) {
-  :root {
-    --orbit-radius: 300px;
-  }
-
-  .gallery-3d {
-    height: 450px;
-  }
-
-  .gallery-item {
-    width: 200px;
-    height: 260px;
-  }
-
   .profile-pic {
     width: 120px;
     height: 120px;
   }
 
+  .hero-title {
+    font-size: var(--font-size-xl);
+  }
+
+  /* Gallery Section Mobile Fix */
+  .gallery-section {
+    height: 100vh;
+    padding: var(--space-md);
+    padding-top: 80px;
+    justify-content: flex-start;
+    gap: var(--space-md);
+  }
+
+  /* Back Button - larger touch target */
+  .back-btn {
+    top: var(--space-md);
+    left: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    min-height: 44px;
+    /* iOS touch target minimum */
+  }
+
+  /* Gallery Tabs - visible and touchable */
+  .gallery-tabs {
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-sm);
+    gap: var(--space-md);
+  }
+
+  .tab-btn {
+    padding: var(--space-sm) var(--space-lg);
+    min-height: 44px;
+    font-size: var(--font-size-md);
+  }
+
+  /* Swiper Gallery - fit remaining space */
+  .gallery-swiper {
+    flex: 1;
+    max-height: 60vh;
+    width: 100%;
+  }
+
+  .swiper-slide {
+    width: 70vw !important;
+    max-width: 280px;
+  }
+
+  .slide-content {
+    max-height: 50vh;
+  }
+
+  /* Counter */
+  .gallery-counter {
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  /* Lightbox Mobile */
+  .lightbox-close {
+    top: var(--space-md);
+    right: var(--space-md);
+    width: 44px;
+    height: 44px;
+  }
+
   .lightbox-nav-btn {
-    width: 45px;
-    height: 45px;
+    width: 44px;
+    height: 44px;
   }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
-  .gallery-controls {
-    flex-wrap: wrap;
-    justify-content: center;
+  .hero-title {
+    font-size: var(--font-size-lg);
   }
 
-  .gallery-item {
-    width: 160px;
-    height: 210px;
+  .hero-subtitle {
+    font-size: var(--font-size-sm);
   }
 
-  .nav-btn {
-    width: 40px;
-    height: 40px;
+  .cta-btn {
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--font-size-sm);
+    min-height: 48px;
+    /* Touch target */
+  }
+
+  /* Gallery Mobile */
+  .gallery-section {
+    padding-top: 70px;
+  }
+
+  .gallery-tabs {
+    margin-top: var(--space-lg);
+  }
+
+  .tab-btn {
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--font-size-sm);
+  }
+
+  .swiper-slide {
+    width: 80vw !important;
+    max-width: 260px;
+  }
+
+  .gallery-swiper {
+    max-height: 55vh;
+  }
+
+  /* Pagination dots larger for touch */
+  .gallery-swiper .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Counter */
+  .gallery-counter {
+    font-size: var(--font-size-sm);
   }
 }
 
