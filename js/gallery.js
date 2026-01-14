@@ -163,19 +163,18 @@ class PortfolioApp {
                 const posterAttr = media.poster ? `poster="${media.poster}"` : '';
                 slide.innerHTML = `
           <div class="slide-content video-slide">
-            <video data-src="${media.src}" ${posterAttr} muted loop playsinline preload="none" class="swiper-lazy"></video>
-            <div class="swiper-lazy-preloader"></div>
+            <video src="${media.src}" ${posterAttr} muted loop playsinline preload="metadata"></video>
             <div class="video-overlay">
               <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
             </div>
           </div>
         `;
             } else {
-                // Image with lazy loading
+                // Image with native lazy loading
                 slide.innerHTML = `
           <div class="slide-content">
-            <img data-src="${media.src}" alt="Photo ${index + 1}" class="swiper-lazy">
-            <div class="swiper-lazy-preloader"></div>
+            <img src="${media.src}" alt="Photo ${index + 1}" loading="lazy" class="gallery-img">
+            <div class="img-preloader"></div>
           </div>
         `;
             }
@@ -212,12 +211,6 @@ class PortfolioApp {
             loop: false, // Disable loop to reduce memory
             speed: 400,
 
-            // Lazy loading for performance
-            lazy: {
-                loadPrevNext: true,
-                loadPrevNextAmount: 2,
-            },
-
             coverflowEffect: {
                 rotate: 0,
                 stretch: isMobile ? 40 : 80,
@@ -238,8 +231,8 @@ class PortfolioApp {
 
             mousewheel: {
                 enabled: true,
-                sensitivity: 1,
-                thresholdDelta: 70, // Prevent scroll jank
+                sensitivity: 0.8, // Reduced for precision
+                thresholdDelta: 50,
             },
 
             // Touch optimization
@@ -277,10 +270,6 @@ class PortfolioApp {
         if (activeSlide) {
             const video = activeSlide.querySelector('video');
             if (video) {
-                // Lazy load: set src from data-src if not loaded yet
-                if (!video.src && video.dataset.src) {
-                    video.src = video.dataset.src;
-                }
                 video.play().catch(() => { });
                 // Hide overlay when playing
                 const overlay = activeSlide.querySelector('.video-overlay');
